@@ -1,0 +1,9 @@
+mosquitto_pub -h 192.168.10.180 -p 1883 -t home/office/device_officepc/usage -m in_use -r
+
+#!/bin/bash
+
+if [ "${1}" == "pre" ]; then
+    mosquitto_pub -h 192.168.10.180 -p 1883 -t home/office/device_officepc/usage -m "idle" -r
+elif [ "${1}" == "post" ]; then
+    mosquitto_pub -h 192.168.10.180 -p 1883 -t home/office/device_officepc/usage -m "in_use" -r
+fi
