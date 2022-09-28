@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#xrandr --output DisplayPort-2 --off
+if [ -z "$(xrandr --listactivemonitors | grep 'DisplayPort-0-1')" ]; then
+	xrandr --setmonitor DisplayPort-0-2 2560/595x1440/340+1280+0 DisplayPort-0
+	xrandr --setmonitor DisplayPort-0-1 1280/297x1440/340+0+0 none
+	xrandr --setmonitor DisplayPort-0-3 1280/298x1440/340+3840+0 none
+else
+	echo 'deleting'
+	xrandr --delmonitor DisplayPort-0-1
+	xrandr --delmonitor DisplayPort-0-2
+	xrandr --delmonitor DisplayPort-0-3
+fi
+xrandr --fb 5121x1440
+xrandr --fb 5120x1440

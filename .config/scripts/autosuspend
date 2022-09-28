@@ -1,0 +1,12 @@
+#!/bin/bash
+
+notify-send 'Idle hook running' 'System will suspend after 10 minutes of inacitivity' --icon=dialog-information
+xidlehook \
+--not-when-fullscreen \
+--not-when-audio \
+--timer 300 \
+'notify-send "System idle" "System will suspend after 5 minutes" --icon=dialog-information' \
+'' \
+--timer 300 \
+'systemctl suspend' \
+''
