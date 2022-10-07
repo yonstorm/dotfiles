@@ -16,3 +16,4 @@ alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 PS1='[\u@\h \W]\$ '
 
 export PATH=$PATH:~/.local/bin
+export PATH=$PATH:~/.config/scripts/
