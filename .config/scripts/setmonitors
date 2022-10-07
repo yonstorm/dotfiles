@@ -1,15 +1,41 @@
 #!/bin/sh
 
-#xrandr --output DisplayPort-2 --off
-if [ -z "$(xrandr --listactivemonitors | grep 'DisplayPort-0-1')" ]; then
-	xrandr --setmonitor DisplayPort-0-2 2560/595x1440/340+1280+0 DisplayPort-0
-	xrandr --setmonitor DisplayPort-0-1 1280/297x1440/340+0+0 none
-	xrandr --setmonitor DisplayPort-0-3 1280/298x1440/340+3840+0 none
+reset() {
+    if [ "$MODE" = "split" ]; then
+        xrandr --delmonitor DisplayPort-0-1
+        xrandr --delmonitor DisplayPort-0-2
+        xrandr --delmonitor DisplayPort-0-3
+        xrandr --fb 5120x1440
+    fi
+}
+
+get_current_mode() {
+    if [ "$(xrandr --listactivemonitors | grep 'DisplayPort-0-1')" ]; then
+        MODE="split"
+    elif [ "$(xrandr | grep '*' | awk '{print $1}')" = "1920x1080" ]; then
+        MODE="game"
+    elif [ "$(xrandr | grep '*' | awk '{print $1}')" = "5120x1440" ]; then
+        MODE="normal"
+    else
+        MODE="unknown"
+    fi
+}
+echo $1
+
+get_current_mode
+echo $MODE
+
+if [ "$1" = "game" ]; then
+    reset
+    xrandr --output DisplayPort-0 --mode 1920x1080 
+    xrandr --fb 1920x1080
 else
-	echo 'deleting'
-	xrandr --delmonitor DisplayPort-0-1
-	xrandr --delmonitor DisplayPort-0-2
-	xrandr --delmonitor DisplayPort-0-3
+    xrandr --output DisplayPort-0 --mode 5120x1440 
+    if [ "$MODE" != "split" ]; then
+        xrandr --setmonitor DisplayPort-0-2 2560/595x1440/340+1280+0 DisplayPort-0
+        xrandr --setmonitor DisplayPort-0-1 1280/297x1440/340+0+0 none
+        xrandr --setmonitor DisplayPort-0-3 1280/298x1440/340+3840+0 none
+    else
+        reset
+    fi
 fi
-xrandr --fb 5121x1440
-xrandr --fb 5120x1440
