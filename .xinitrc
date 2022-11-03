@@ -9,7 +9,7 @@ fi
 dunst &
 exec dwm & wmpid=$!
 
-./.config/scripts/setmonitors &
+./.config/scripts/setmonitors split &
 ./.config/scripts/autosuspend &
 
 wait $wmpid
